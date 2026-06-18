@@ -1,0 +1,15 @@
+com\opus\erp\sales\service\impl\SoOrderServiceImplTest$CreateOrderTests.class
+com\opus\erp\sales\service\impl\SoOrderServiceImplTest$UpdateShippedQuantityTests.class
+com\opus\erp\sales\service\impl\SoOrderServiceImplTest$ListOrdersTests.class
+com\opus\erp\sales\service\impl\SoOrderServiceImplTest$CancelOrderTests.class
+com\opus\erp\sales\service\impl\SoOrderServiceImplTest$ShipOrderTests.class
+com\opus\erp\sales\service\impl\SoShipmentServiceImplTest.class
+com\opus\erp\sales\service\impl\SoShipmentServiceImplTest$CreateShipmentTests.class
+com\opus\erp\sales\service\impl\SoShipmentServiceImplTest$ListShipmentsTests.class
+com\opus\erp\sales\service\impl\SoOrderServiceImplTest$GetOrderDetailTests.class
+com\opus\erp\sales\service\impl\SoShipmentServiceImplTest$CancelShipmentTests.class
+com\opus\erp\sales\service\impl\SoOrderServiceImplTest.class
+com\opus\erp\sales\service\impl\SoOrderServiceImplTest$UpdateOrderTests.class
+com\opus\erp\sales\service\impl\SoShipmentServiceImplTest$AuditShipmentTests.class
+com\opus\erp\sales\service\impl\SoOrderServiceImplTest$AuditOrderTests.class
+com\opus\erp\sales\service\impl\SoShipmentServiceImplTest$GetShipmentDetailTests.class

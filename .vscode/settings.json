@@ -1,0 +1,14 @@
+{
+  "java.jdt.ls.java.home": "D:\\Java\\jdk-21.0.10+7",
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-1.8",
+      "path": "D:\\Java\\zulu8.84.0.15-ca-jdk8.0.442-win_x64"
+    },
+    {
+      "name": "JavaSE-21",
+      "path": "D:\\Java\\jdk-21.0.10+7",
+      "default": true
+    }
+  ]
+}

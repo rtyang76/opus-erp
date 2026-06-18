@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.opus</groupId>
+        <artifactId>opus-erp</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>opus-erp-app</artifactId>
+    <name>Opus ERP Application</name>
+    <description>Application entry point and packaging</description>
+
+    <dependencies>
+        <!-- All business modules -->
+        <dependency>
+            <groupId>com.opus</groupId>
+            <artifactId>opus-erp-system</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.opus</groupId>
+            <artifactId>opus-erp-master</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.opus</groupId>
+            <artifactId>opus-erp-inventory</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.opus</groupId>
+            <artifactId>opus-erp-purchase</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.opus</groupId>
+            <artifactId>opus-erp-sales</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.opus</groupId>
+            <artifactId>opus-erp-production</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.opus</groupId>
+            <artifactId>opus-erp-finance</artifactId>
+        </dependency>
+
+        <!-- SQL Server -->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+        </dependency>
+
+        <!-- Flyway -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-sqlserver</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <mainClass>com.opus.erp.OpusErpApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

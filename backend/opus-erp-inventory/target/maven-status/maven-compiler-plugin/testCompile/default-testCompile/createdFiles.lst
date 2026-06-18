@@ -1,0 +1,16 @@
+com\opus\erp\inventory\service\impl\InvStocktakeServiceImplTest$CreateStocktakeTests.class
+com\opus\erp\inventory\service\impl\InvTransactionServiceImplTest$CreateReceiptTests.class
+com\opus\erp\inventory\service\impl\InvTransactionServiceImplTest.class
+com\opus\erp\inventory\service\impl\InvTransferServiceImplTest$CreateTransferTests.class
+com\opus\erp\inventory\service\impl\InvTransferServiceImplTest$ListTransfersTests.class
+com\opus\erp\inventory\service\impl\InvTransferServiceImplTest$AuditTransferTests.class
+com\opus\erp\inventory\service\impl\InvStocktakeServiceImplTest$AuditStocktakeTests.class
+com\opus\erp\inventory\service\impl\InvTransactionServiceImplTest$CreateIssueTests.class
+com\opus\erp\inventory\service\impl\InvStocktakeServiceImplTest$CancelStocktakeTests.class
+com\opus\erp\inventory\service\impl\InvTransactionServiceImplTest$CreateTransferTests.class
+com\opus\erp\inventory\service\impl\InvTransferServiceImplTest$CancelTransferTests.class
+com\opus\erp\inventory\service\impl\InvStocktakeServiceImplTest.class
+com\opus\erp\inventory\service\impl\InvStocktakeServiceImplTest$ListStocktakesTests.class
+com\opus\erp\inventory\service\impl\InvTransactionServiceImplTest$CreateAdjustmentTests.class
+com\opus\erp\inventory\service\impl\InvTransactionServiceImplTest$CheckAvailableStockTests.class
+com\opus\erp\inventory\service\impl\InvTransferServiceImplTest.class

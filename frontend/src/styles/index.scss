@@ -1,0 +1,86 @@
+// 全局样式
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+// 通用页面样式
+.page-container {
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  min-height: calc(100vh - 160px);
+}
+
+// 搜索区域
+.search-area {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: #f5f7fa;
+  border-radius: 4px;
+}
+
+// 表格操作按钮
+.table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+// 表单弹窗
+.form-dialog {
+  .el-dialog__body {
+    padding: 20px 30px;
+  }
+}
+
+// 状态标签
+.status-tag {
+  &.draft {
+    color: #909399;
+  }
+  &.audited {
+    color: #67c23a;
+  }
+  &.cancelled {
+    color: #f56c6c;
+  }
+}
+
+// 分页
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+// 卡片样式
+.el-card {
+  margin-bottom: 20px;
+}
+
+// 按钮间距
+.el-button + .el-button {
+  margin-left: 8px;
+}
+
+// 表格行操作
+.el-table .cell {
+  .el-button {
+    padding: 4px 8px;
+  }
+}

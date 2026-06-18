@@ -1,0 +1,75 @@
+# Opus ERP Application Configuration
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  profiles:
+    active: dev
+
+  # Application name
+  application:
+    name: opus-erp
+
+  # Jackson configuration
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    serialization:
+      write-dates-as-timestamps: false
+
+  # SQL Server Datasource
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1433;databaseName=opus_erp;encrypt=false;trustServerCertificate=true
+    username: sa
+    password: ${DB_PASSWORD:YourPassword123!}
+
+  # Flyway configuration
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    out-of-order: false
+    table: flyway_schema_history
+    baseline-version: 0
+
+  # Redis configuration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+      timeout: 10000
+
+# MyBatis-Plus configuration
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  type-aliases-package: com.opus.erp.**.entity
+
+# JWT configuration
+jwt:
+  secret: ${JWT_SECRET:opus-erp-secret-key-must-be-at-least-256-bits-long-for-hmac-sha}
+  expiration: 7200
+  refresh-expiration: 604800
+
+# Logging configuration
+logging:
+  level:
+    root: INFO
+    com.opus.erp: DEBUG
+    org.springframework.security: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
