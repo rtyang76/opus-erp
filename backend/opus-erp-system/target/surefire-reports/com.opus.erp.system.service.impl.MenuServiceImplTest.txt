@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.opus.erp.system.service.impl.MenuServiceImplTest
--------------------------------------------------------------------------------
-Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.121 s -- in com.opus.erp.system.service.impl.MenuServiceImplTest

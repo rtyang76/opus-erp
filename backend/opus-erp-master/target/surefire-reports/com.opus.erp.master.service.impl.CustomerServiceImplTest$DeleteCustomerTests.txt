@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.opus.erp.master.service.impl.CustomerServiceImplTest$DeleteCustomerTests
--------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.762 s -- in com.opus.erp.master.service.impl.CustomerServiceImplTest$DeleteCustomerTests
