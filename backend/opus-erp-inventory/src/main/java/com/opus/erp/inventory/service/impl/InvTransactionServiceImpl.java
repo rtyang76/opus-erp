@@ -112,11 +112,17 @@ public class InvTransactionServiceImpl implements InvTransactionService {
         BigDecimal currentAvgCost = getCurrentAvgCost(itemId, warehouseId, binId, lotNo);
         BigDecimal actualUnitCost = unitCost != null ? unitCost : currentAvgCost;
 
-        // 更新库存（数量为负数）
-        BigDecimal negativeQuantity = quantity.negate();
-        stockMapper.updateQuantity(itemId, warehouseId, binId, lotNo, negativeQuantity, actualUnitCost);
+        // 更新库存（带负数保护）
+        // 使用 updateQuantityForIssue 方法，只有当可用库存 >= 出库数量时才允许更新
+        int affected = stockMapper.updateQuantityForIssue(itemId, warehouseId, binId, lotNo, quantity, actualUnitCost);
+        if (affected == 0) {
+            throw new BusinessException(ErrorCode.STOCK_INSUFFICIENT,
+                    String.format("库存不足: 物料[%d] 在仓库[%d] 可用数量不足，请求出库数量为 %s",
+                            itemId, warehouseId, quantity.toPlainString()));
+        }
 
         // 记录流水（数量为负数）
+        BigDecimal negativeQuantity = quantity.negate();
         InvTransaction transaction = createTransaction(
                 InvTransactionType.ISSUE.getCode(), itemId, warehouseId, binId, lotNo,
                 negativeQuantity, actualUnitCost,

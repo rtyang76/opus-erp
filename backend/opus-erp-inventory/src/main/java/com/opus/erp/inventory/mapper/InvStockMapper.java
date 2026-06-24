@@ -44,6 +44,31 @@ public interface InvStockMapper extends BaseMapper<InvStock> {
                        @Param("unitCost") BigDecimal unitCost);
 
     /**
+     * 出库更新库存（带负数保护）
+     * 只有当可用库存 >= 出库数量时才允许更新
+     * @param itemId 物料ID
+     * @param warehouseId 仓库ID
+     * @param binId 库位ID（可空）
+     * @param lotNo 批次号（可空）
+     * @param quantity 出库数量（正数）
+     * @param unitCost 单位成本
+     * @return 影响行数
+     */
+    @Update("UPDATE inv_stock SET " +
+            "quantity = quantity - #{quantity}, " +
+            "updated_at = GETDATE() " +
+            "WHERE item_id = #{itemId} AND warehouse_id = #{warehouseId} " +
+            "AND (bin_id = #{binId} OR (bin_id IS NULL AND #{binId} IS NULL)) " +
+            "AND (lot_no = #{lotNo} OR (lot_no IS NULL AND #{lotNo} IS NULL)) " +
+            "AND (quantity - locked_quantity) >= #{quantity}")
+    int updateQuantityForIssue(@Param("itemId") Long itemId,
+                               @Param("warehouseId") Long warehouseId,
+                               @Param("binId") Long binId,
+                               @Param("lotNo") String lotNo,
+                               @Param("quantity") BigDecimal quantity,
+                               @Param("unitCost") BigDecimal unitCost);
+
+    /**
      * 锁定库存（待出库）
      */
     @Update("UPDATE inv_stock SET " +

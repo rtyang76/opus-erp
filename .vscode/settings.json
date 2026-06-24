@@ -10,5 +10,6 @@
       "path": "D:\\Java\\jdk-21.0.10+7",
       "default": true
     }
-  ]
+  ],
+  "git.ignoreLimitWarning": true
 }

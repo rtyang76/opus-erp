@@ -152,9 +152,9 @@ class InvTransactionServiceImplTest {
         @DisplayName("成功出库")
         void createIssue_success() {
             // given
-            when(stockMapper.getAvailableQuantity(anyLong(), anyLong(), any(), any()))
+            when(stockMapper.getAvailableQuantity(itemId, warehouseId, null, null))
                     .thenReturn(new BigDecimal("200"));
-            when(stockMapper.updateQuantity(anyLong(), anyLong(), any(), any(), any(), any()))
+            when(stockMapper.updateQuantityForIssue(anyLong(), anyLong(), any(), any(), any(), any()))
                     .thenReturn(1);
             when(transactionMapper.insert(any(InvTransaction.class)))
                     .thenReturn(1);

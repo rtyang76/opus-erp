@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getItems, createItem, updateItem, deleteItem } from '@/api/master-item'
 import type { MdmItem, ItemQuery } from '@/api/master-item'
-import { STATUS_ENABLED } from '@/constants/status'
+import { STATUS_ENABLED, ITEM_TYPE_OPTIONS } from '@/constants/status'
 import ItemSearchForm from './ItemSearchForm.vue'
 import ItemFormDialog from './ItemFormDialog.vue'
 
@@ -45,13 +45,8 @@ const formData = ref<Partial<MdmItem>>({
   remark: '',
 })
 
-// 物料类型选项
-const itemTypeOptions = [
-  { label: '原材料', value: 'RAW' },
-  { label: '半成品', value: 'SEMI' },
-  { label: '成品', value: 'FINISHED' },
-  { label: '辅材', value: 'AUXILIARY' },
-]
+// 使用常量定义物料类型选项
+const itemTypeOptions = ITEM_TYPE_OPTIONS
 
 // 查询物料列表
 const getList = async () => {

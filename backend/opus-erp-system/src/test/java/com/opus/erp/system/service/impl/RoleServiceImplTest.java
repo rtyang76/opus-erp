@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.opus.erp.common.exception.BusinessException;
 import com.opus.erp.system.entity.SysRole;
 import com.opus.erp.system.mapper.SysRoleMapper;
+import com.opus.erp.system.mapper.SysRoleMenuMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -32,6 +33,9 @@ class RoleServiceImplTest {
 
     @Mock
     private SysRoleMapper roleMapper;
+
+    @Mock
+    private SysRoleMenuMapper roleMenuMapper;
 
     @InjectMocks
     private RoleServiceImpl roleService;
@@ -258,12 +262,14 @@ class RoleServiceImplTest {
         void deleteRole_success() {
             // given
             when(roleMapper.selectById(1L)).thenReturn(testRole);
+            when(roleMenuMapper.deleteByRoleId(1L)).thenReturn(1);
             when(roleMapper.deleteById(1L)).thenReturn(1);
 
             // when
             roleService.deleteRole(1L);
 
             // then
+            verify(roleMenuMapper).deleteByRoleId(1L);
             verify(roleMapper).deleteById(1L);
         }
 

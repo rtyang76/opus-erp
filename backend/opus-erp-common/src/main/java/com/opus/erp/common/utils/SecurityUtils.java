@@ -1,13 +1,11 @@
 package com.opus.erp.common.utils;
 
-import org.springframework.stereotype.Component;
-
 /**
  * 安全工具类
  * 用于获取当前登录用户信息
  * 注意：这是一个简化的实现，实际项目中应该从 SecurityContext 中获取
+ * 所有方法均为静态方法，不需要 @Component 注解
  */
-@Component
 public class SecurityUtils {
 
     /**

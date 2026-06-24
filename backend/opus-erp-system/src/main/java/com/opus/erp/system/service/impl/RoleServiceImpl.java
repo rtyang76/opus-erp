@@ -6,12 +6,17 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.opus.erp.common.exception.BusinessException;
 import com.opus.erp.common.result.ErrorCode;
 import com.opus.erp.system.entity.SysRole;
+import com.opus.erp.system.entity.SysRoleMenu;
 import com.opus.erp.system.mapper.SysRoleMapper;
+import com.opus.erp.system.mapper.SysRoleMenuMapper;
 import com.opus.erp.system.service.RoleService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -19,7 +24,10 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements RoleService {
+
+    private final SysRoleMenuMapper roleMenuMapper;
 
     @Override
     public Page<SysRole> listRoles(int pageNum, int pageSize, String roleName, Integer status) {
@@ -60,6 +68,7 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public SysRole createRole(SysRole role) {
         // 检查角色编码是否已存在
         LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
@@ -68,12 +77,26 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
             throw new BusinessException(ErrorCode.DUPLICATE, "角色编码已存在");
         }
 
+        // 保存角色
         baseMapper.insert(role);
+
+        // 保存角色-菜单关联
+        if (role.getMenuIds() != null && !role.getMenuIds().isEmpty()) {
+            for (Long menuId : role.getMenuIds()) {
+                SysRoleMenu roleMenu = new SysRoleMenu();
+                roleMenu.setRoleId(role.getId());
+                roleMenu.setMenuId(menuId);
+                roleMenu.setCreatedAt(LocalDateTime.now());
+                roleMenuMapper.insert(roleMenu);
+            }
+        }
+
         log.info("创建角色成功: roleCode={}", role.getRoleCode());
         return role;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public SysRole updateRole(SysRole role) {
         // 检查角色是否存在
         SysRole existingRole = baseMapper.selectById(role.getId());
@@ -89,19 +112,41 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
             throw new BusinessException(ErrorCode.DUPLICATE, "角色编码已存在");
         }
 
+        // 更新角色
         baseMapper.updateById(role);
+
+        // 更新角色-菜单关联
+        if (role.getMenuIds() != null) {
+            // 删除旧关联
+            roleMenuMapper.deleteByRoleId(role.getId());
+            // 保存新关联
+            for (Long menuId : role.getMenuIds()) {
+                SysRoleMenu roleMenu = new SysRoleMenu();
+                roleMenu.setRoleId(role.getId());
+                roleMenu.setMenuId(menuId);
+                roleMenu.setCreatedAt(LocalDateTime.now());
+                roleMenuMapper.insert(roleMenu);
+            }
+        }
+
         log.info("更新角色成功: roleId={}", role.getId());
         return role;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteRole(Long roleId) {
         SysRole role = baseMapper.selectById(roleId);
         if (role == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND, "角色不存在");
         }
 
+        // 删除角色-菜单关联
+        roleMenuMapper.deleteByRoleId(roleId);
+
+        // 删除角色
         baseMapper.deleteById(roleId);
+
         log.info("删除角色成功: roleId={}", roleId);
     }
 

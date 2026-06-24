@@ -25,7 +25,11 @@ import java.util.Map;
 @Component
 public class JwtUtils {
 
-    @Value("${jwt.secret:opus-erp-secret-key-must-be-at-least-256-bits-long}")
+    /**
+     * JWT 密钥，必须从环境变量读取，禁止硬编码
+     * 设置环境变量: export JWT_SECRET=your-secret-key-at-least-256-bits
+     */
+    @Value("${jwt.secret}")
     private String secret;
 
     @Value("${jwt.expiration:7200}")

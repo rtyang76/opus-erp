@@ -1,4 +1,5 @@
 import request from './request'
+import type { R } from './system'
 
 export interface LoginRequest {
   username: string
@@ -17,12 +18,6 @@ export interface LoginResponse {
     roles: string[]
     permissions: string[]
   }
-}
-
-export interface R<T> {
-  code: number
-  msg: string
-  data: T
 }
 
 /**

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * 用户管理控制器
  */
@@ -52,6 +54,7 @@ public class UserController {
 
     /**
      * 创建用户
+     * TODO: DTO-to-Entity 转换应移入 Service 层
      */
     @PostMapping
     public R<SysUser> createUser(@Valid @RequestBody UserDTO dto) {
@@ -63,6 +66,7 @@ public class UserController {
 
     /**
      * 更新用户
+     * TODO: DTO-to-Entity 转换应移入 Service 层
      */
     @PutMapping("/{id}")
     public R<SysUser> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
@@ -84,9 +88,14 @@ public class UserController {
 
     /**
      * 重置用户密码
+     * 注意：密码通过请求体传递，避免被日志记录
      */
     @PutMapping("/{id}/password")
-    public R<Void> resetPassword(@PathVariable Long id, @RequestParam String newPassword) {
+    public R<Void> resetPassword(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        String newPassword = body.get("newPassword");
+        if (newPassword == null || newPassword.isBlank()) {
+            return R.fail(1001, "新密码不能为空");
+        }
         userService.resetPassword(id, newPassword);
         return R.okMsg("密码重置成功");
     }
