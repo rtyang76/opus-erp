@@ -43,6 +43,12 @@ log/
 *.swp
 *~
 
+# 调试文件
+.dbg/
+debug-*.md
+jstack*.txt
+*.env.local
+
 # ==================== Node.js / Vue ====================
 
 # 依赖
@@ -59,6 +65,13 @@ dist-ssr/
 .vite/
 .eslintcache
 .stylelintcache
+
+# 自动生成的类型声明
+auto-imports.d.ts
+components.d.ts
+
+# Vite 临时文件
+*.timestamp-*.mjs
 
 # 编辑器目录和文件
 .editorconfig
