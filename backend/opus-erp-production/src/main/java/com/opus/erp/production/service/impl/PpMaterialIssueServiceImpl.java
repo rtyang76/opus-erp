@@ -7,6 +7,7 @@ import com.opus.erp.common.exception.BusinessException;
 import com.opus.erp.common.result.ErrorCode;
 import com.opus.erp.common.utils.OrderNoGenerator;
 import com.opus.erp.inventory.service.InvTransactionService;
+import com.opus.erp.production.dto.MaterialIssueDTO;
 import com.opus.erp.production.entity.PpMaterialIssue;
 import com.opus.erp.production.entity.PpMaterialIssueDetail;
 import com.opus.erp.production.enums.MaterialIssueStatus;
@@ -16,14 +17,14 @@ import com.opus.erp.production.mapper.PpMaterialIssueMapper;
 import com.opus.erp.production.service.PpMaterialIssueService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 领料单服务实现类
@@ -186,5 +187,24 @@ public class PpMaterialIssueServiceImpl extends ServiceImpl<PpMaterialIssueMappe
      */
     private String generateIssueNo() {
         return OrderNoGenerator.generateMaterialIssueNo();
+    }
+
+    @Override
+    public PpMaterialIssue createFromDTO(MaterialIssueDTO dto) {
+        PpMaterialIssue issue = new PpMaterialIssue();
+        BeanUtils.copyProperties(dto, issue);
+
+        // 转换明细
+        if (dto.getDetails() != null) {
+            List<PpMaterialIssueDetail> details = new ArrayList<>();
+            for (MaterialIssueDTO.MaterialIssueDetailDTO detailDTO : dto.getDetails()) {
+                PpMaterialIssueDetail detail = new PpMaterialIssueDetail();
+                BeanUtils.copyProperties(detailDTO, detail);
+                details.add(detail);
+            }
+            issue.setDetails(details);
+        }
+
+        return createIssue(issue);
     }
 }

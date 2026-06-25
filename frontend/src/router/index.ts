@@ -135,6 +135,12 @@ const router = createRouter({
           component: () => import('@/views/production/workorder/index.vue'),
           meta: { title: '生产工单', icon: 'Document', permission: 'pp:workorder:list' },
         },
+        {
+          path: 'production/material',
+          name: 'production-material',
+          component: () => import('@/views/production/material/index.vue'),
+          meta: { title: '领料管理', icon: 'DocumentRemove', permission: 'pp:material:list' },
+        },
         // 财务管理
         {
           path: 'finance/receivable',

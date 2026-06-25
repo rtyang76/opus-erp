@@ -2,6 +2,7 @@ package com.opus.erp.production.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.opus.erp.production.dto.WorkOrderDTO;
 import com.opus.erp.production.entity.PpWorkOrder;
 
 /**
@@ -59,4 +60,11 @@ public interface PpWorkOrderService extends IService<PpWorkOrder> {
      * @param orderId 工单ID
      */
     void closeWorkOrder(Long orderId);
+
+    /**
+     * 根据 DTO 创建工单
+     * @param dto 工单 DTO
+     * @return 创建的工单
+     */
+    PpWorkOrder createFromDTO(WorkOrderDTO dto);
 }

@@ -77,8 +77,8 @@ const formatMoney = (num: number) => {
 }
 
 // 获取交易类型标签颜色
-const getTypeColor = (type: string) => {
-  const colorMap: Record<string, string> = {
+const getTypeColor = (type: string): 'success' | 'primary' | 'warning' | 'info' | 'danger' => {
+  const colorMap: Record<string, 'success' | 'primary' | 'warning' | 'info' | 'danger'> = {
     RECEIPT: 'success',
     ISSUE: 'danger',
     TRANSFER: 'primary',

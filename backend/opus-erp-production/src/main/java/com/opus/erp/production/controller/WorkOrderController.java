@@ -8,7 +8,6 @@ import com.opus.erp.production.entity.PpWorkOrder;
 import com.opus.erp.production.service.PpWorkOrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,15 +53,10 @@ public class WorkOrderController {
 
     /**
      * 创建工单
-     * TODO: DTO-to-Entity 转换应移入 Service 层，Controller 只做参数校验和调用 Service
-     * 当前实现：Controller 中完成转换，后续重构为 Service 接受 DTO 参数
      */
     @PostMapping
     public R<PpWorkOrder> createWorkOrder(@Valid @RequestBody WorkOrderDTO dto) {
-        PpWorkOrder workOrder = new PpWorkOrder();
-        BeanUtils.copyProperties(dto, workOrder);
-
-        PpWorkOrder createdOrder = workOrderService.createWorkOrder(workOrder);
+        PpWorkOrder createdOrder = workOrderService.createFromDTO(dto);
         return R.ok("创建成功", createdOrder);
     }
 

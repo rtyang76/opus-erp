@@ -113,8 +113,8 @@ const formatRate = (num: number) => {
 }
 
 // 获取状态标签颜色
-const getStatusColor = (status: string) => {
-  const colorMap: Record<string, string> = {
+const getStatusColor = (status: string): 'success' | 'primary' | 'warning' | 'info' | 'danger' => {
+  const colorMap: Record<string, 'success' | 'primary' | 'warning' | 'info' | 'danger'> = {
     PENDING: 'info',
     RELEASED: 'warning',
     IN_PROGRESS: 'primary',

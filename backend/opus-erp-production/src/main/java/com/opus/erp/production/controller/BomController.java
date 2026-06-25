@@ -4,11 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.opus.erp.common.result.R;
 import com.opus.erp.production.dto.BomDTO;
 import com.opus.erp.production.entity.PpBom;
-import com.opus.erp.production.entity.PpBomDetail;
 import com.opus.erp.production.service.PpBomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * BOM 管理控制器
@@ -57,26 +52,10 @@ public class BomController {
 
     /**
      * 创建 BOM
-     * TODO: DTO-to-Entity 转换应移入 Service 层，Controller 只做参数校验和调用 Service
-     * 当前实现：Controller 中完成转换，后续重构为 Service 接受 DTO 参数
      */
     @PostMapping
     public R<PpBom> createBom(@Valid @RequestBody BomDTO dto) {
-        PpBom bom = new PpBom();
-        BeanUtils.copyProperties(dto, bom);
-
-        // 转换明细
-        if (dto.getDetails() != null) {
-            List<PpBomDetail> details = new ArrayList<>();
-            for (BomDTO.BomDetailDTO detailDTO : dto.getDetails()) {
-                PpBomDetail detail = new PpBomDetail();
-                BeanUtils.copyProperties(detailDTO, detail);
-                details.add(detail);
-            }
-            bom.setDetails(details);
-        }
-
-        PpBom createdBom = bomService.createBom(bom);
+        PpBom createdBom = bomService.createFromDTO(dto);
         return R.ok("创建成功", createdBom);
     }
 
@@ -85,22 +64,7 @@ public class BomController {
      */
     @PutMapping("/{id}")
     public R<PpBom> updateBom(@PathVariable Long id, @Valid @RequestBody BomDTO dto) {
-        PpBom bom = new PpBom();
-        BeanUtils.copyProperties(dto, bom);
-        bom.setId(id);
-
-        // 转换明细
-        if (dto.getDetails() != null) {
-            List<PpBomDetail> details = new ArrayList<>();
-            for (BomDTO.BomDetailDTO detailDTO : dto.getDetails()) {
-                PpBomDetail detail = new PpBomDetail();
-                BeanUtils.copyProperties(detailDTO, detail);
-                details.add(detail);
-            }
-            bom.setDetails(details);
-        }
-
-        PpBom updatedBom = bomService.updateBom(bom);
+        PpBom updatedBom = bomService.updateFromDTO(id, dto);
         return R.ok("更新成功", updatedBom);
     }
 

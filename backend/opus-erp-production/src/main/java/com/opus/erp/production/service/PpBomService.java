@@ -2,6 +2,7 @@ package com.opus.erp.production.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.opus.erp.production.dto.BomDTO;
 import com.opus.erp.production.entity.PpBom;
 
 /**
@@ -46,4 +47,19 @@ public interface PpBomService extends IService<PpBom> {
      * @param bomId BOM ID
      */
     void deleteBom(Long bomId);
+
+    /**
+     * 根据 DTO 创建 BOM
+     * @param dto BOM DTO
+     * @return 创建的 BOM
+     */
+    PpBom createFromDTO(BomDTO dto);
+
+    /**
+     * 根据 DTO 更新 BOM
+     * @param id BOM ID
+     * @param dto BOM DTO
+     * @return 更新的 BOM
+     */
+    PpBom updateFromDTO(Long id, BomDTO dto);
 }

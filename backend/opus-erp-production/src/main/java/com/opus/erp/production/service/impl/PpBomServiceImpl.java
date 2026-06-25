@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.opus.erp.common.exception.BusinessException;
 import com.opus.erp.common.result.ErrorCode;
+import com.opus.erp.production.dto.BomDTO;
 import com.opus.erp.production.entity.PpBom;
 import com.opus.erp.production.entity.PpBomDetail;
 import com.opus.erp.production.mapper.PpBomDetailMapper;
@@ -12,9 +13,13 @@ import com.opus.erp.production.mapper.PpBomMapper;
 import com.opus.erp.production.service.PpBomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * BOM 服务实现类
@@ -130,5 +135,44 @@ public class PpBomServiceImpl extends ServiceImpl<PpBomMapper, PpBom> implements
         baseMapper.deleteById(bomId);
 
         log.info("删除BOM成功: bomId={}", bomId);
+    }
+
+    @Override
+    public PpBom createFromDTO(BomDTO dto) {
+        PpBom bom = new PpBom();
+        BeanUtils.copyProperties(dto, bom);
+
+        // 转换明细
+        if (dto.getDetails() != null) {
+            List<PpBomDetail> details = new ArrayList<>();
+            for (BomDTO.BomDetailDTO detailDTO : dto.getDetails()) {
+                PpBomDetail detail = new PpBomDetail();
+                BeanUtils.copyProperties(detailDTO, detail);
+                details.add(detail);
+            }
+            bom.setDetails(details);
+        }
+
+        return createBom(bom);
+    }
+
+    @Override
+    public PpBom updateFromDTO(Long id, BomDTO dto) {
+        PpBom bom = new PpBom();
+        BeanUtils.copyProperties(dto, bom);
+        bom.setId(id);
+
+        // 转换明细
+        if (dto.getDetails() != null) {
+            List<PpBomDetail> details = new ArrayList<>();
+            for (BomDTO.BomDetailDTO detailDTO : dto.getDetails()) {
+                PpBomDetail detail = new PpBomDetail();
+                BeanUtils.copyProperties(detailDTO, detail);
+                details.add(detail);
+            }
+            bom.setDetails(details);
+        }
+
+        return updateBom(bom);
     }
 }

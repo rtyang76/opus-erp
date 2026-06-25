@@ -89,4 +89,18 @@ public class OrderNoGenerator {
     public static String generateMaterialIssueNo() {
         return generate("MI");
     }
+
+    /**
+     * 生成应收单号
+     */
+    public static String generateReceivableNo() {
+        return generate("RV");
+    }
+
+    /**
+     * 生成应付单号
+     */
+    public static String generatePayableNo() {
+        return generate("PY");
+    }
 }

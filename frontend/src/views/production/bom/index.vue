@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getBoms, deleteBom } from '@/api/production'
-import type { PpBom, BomQuery } from '@/api/production'
+import { getBoms, createBom, deleteBom } from '@/api/production'
+import type { PpBom, BomQuery, BomCreateRequest } from '@/api/production'
 import { STATUS_OPTIONS } from '@/constants/status'
+import BomFormDialog from './BomFormDialog.vue'
 
 // 查询参数
 const queryParams = ref<BomQuery>({
@@ -18,6 +19,10 @@ const queryParams = ref<BomQuery>({
 const tableData = ref<PpBom[]>([])
 const total = ref(0)
 const loading = ref(false)
+
+// 弹窗控制
+const dialogVisible = ref(false)
+const dialogTitle = ref('新增BOM')
 
 // 查询 BOM 列表
 const getList = async () => {
@@ -50,6 +55,31 @@ const handleReset = () => {
     status: undefined,
   }
   getList()
+}
+
+// 新增
+const handleAdd = () => {
+  dialogTitle.value = '新增BOM'
+  dialogVisible.value = true
+}
+
+// 编辑
+const handleEdit = (_row: PpBom) => {
+  dialogTitle.value = '编辑BOM'
+  dialogVisible.value = true
+}
+
+// 提交表单
+const handleSubmit = async (data: BomCreateRequest) => {
+  try {
+    await createBom(data)
+    ElMessage.success('创建成功')
+    dialogVisible.value = false
+    getList()
+  } catch (error) {
+    console.error('创建失败:', error)
+    ElMessage.error('操作失败，请重试')
+  }
 }
 
 // 删除
@@ -114,8 +144,8 @@ onMounted(() => {
     </div>
 
     <!-- 操作按钮 -->
-    <el-button type="primary" style="margin-bottom: 16px" disabled>
-      新增BOM（开发中）
+    <el-button type="primary" style="margin-bottom: 16px" @click="handleAdd">
+      新增BOM
     </el-button>
 
     <!-- 表格 -->
@@ -136,7 +166,7 @@ onMounted(() => {
       <el-table-column prop="createdAt" label="创建时间" width="180" />
       <el-table-column label="操作" width="150" fixed="right">
         <template #default="{ row }">
-          <el-button type="primary" link disabled>编辑</el-button>
+          <el-button type="primary" link @click="handleEdit(row)">编辑</el-button>
           <el-button type="danger" link @click="handleDelete(row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -154,5 +184,12 @@ onMounted(() => {
         @current-change="handleCurrentChange"
       />
     </div>
+
+    <!-- 新增弹窗 -->
+    <BomFormDialog
+      v-model:visible="dialogVisible"
+      :title="dialogTitle"
+      @submit="handleSubmit"
+    />
   </div>
 </template>

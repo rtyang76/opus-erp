@@ -1,30 +1,22 @@
 package com.opus.erp.inventory.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.opus.erp.common.entity.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * 盘点单明细实体
- * 注意：明细表不继承 BaseEntity，审计字段由主表统一管理
- * 明细表的 created_by/created_at 通过主表级联查询
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName("inv_stocktake_detail")
-public class InvStocktakeDetail implements Serializable {
+public class InvStocktakeDetail extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 主键ID
-     */
-    @TableId(type = IdType.AUTO)
-    private Long id;
 
     /**
      * 盘点单ID

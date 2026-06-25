@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getShipments, auditShipment, cancelShipment } from '@/api/sales'
-import type { SoShipment, ShipmentQuery } from '@/api/sales'
+import { getShipments, createShipment, auditShipment, cancelShipment } from '@/api/sales'
+import type { SoShipment, ShipmentQuery, ShipmentCreateRequest } from '@/api/sales'
 import { DOC_STATUS_OPTIONS } from '@/constants/status'
+import ShipmentFormDialog from './ShipmentFormDialog.vue'
 
 // 查询参数
 const queryParams = ref<ShipmentQuery>({
@@ -19,6 +20,10 @@ const queryParams = ref<ShipmentQuery>({
 const tableData = ref<SoShipment[]>([])
 const total = ref(0)
 const loading = ref(false)
+
+// 弹窗控制
+const dialogVisible = ref(false)
+const dialogTitle = ref('新增出库单')
 
 // 查询出库单列表
 const getList = async () => {
@@ -52,6 +57,25 @@ const handleReset = () => {
     status: '',
   }
   getList()
+}
+
+// 新增
+const handleAdd = () => {
+  dialogTitle.value = '新增出库单'
+  dialogVisible.value = true
+}
+
+// 提交表单
+const handleSubmit = async (data: ShipmentCreateRequest) => {
+  try {
+    await createShipment(data)
+    ElMessage.success('创建成功')
+    dialogVisible.value = false
+    getList()
+  } catch (error) {
+    console.error('创建失败:', error)
+    ElMessage.error('操作失败，请重试')
+  }
 }
 
 // 审核
@@ -100,8 +124,8 @@ const handleCurrentChange = (val: number) => {
 }
 
 // 获取状态标签颜色
-const getStatusColor = (status: string) => {
-  const colorMap: Record<string, string> = {
+const getStatusColor = (status: string): 'success' | 'primary' | 'warning' | 'info' | 'danger' => {
+  const colorMap: Record<string, 'success' | 'primary' | 'warning' | 'info' | 'danger'> = {
     DRAFT: 'info',
     AUDITED: 'success',
     CANCELLED: 'danger',
@@ -152,8 +176,8 @@ onMounted(() => {
     </div>
 
     <!-- 操作按钮 -->
-    <el-button type="primary" style="margin-bottom: 16px" disabled>
-      新增出库单（开发中）
+    <el-button type="primary" style="margin-bottom: 16px" @click="handleAdd">
+      新增出库单
     </el-button>
 
     <!-- 表格 -->
@@ -195,5 +219,12 @@ onMounted(() => {
         @current-change="handleCurrentChange"
       />
     </div>
+
+    <!-- 新增弹窗 -->
+    <ShipmentFormDialog
+      v-model:visible="dialogVisible"
+      :title="dialogTitle"
+      @submit="handleSubmit"
+    />
   </div>
 </template>

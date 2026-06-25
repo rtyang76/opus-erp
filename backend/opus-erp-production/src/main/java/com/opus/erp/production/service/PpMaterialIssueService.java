@@ -2,6 +2,7 @@ package com.opus.erp.production.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.opus.erp.production.dto.MaterialIssueDTO;
 import com.opus.erp.production.entity.PpMaterialIssue;
 
 /**
@@ -48,4 +49,11 @@ public interface PpMaterialIssueService extends IService<PpMaterialIssue> {
      * @param issueId 领料单ID
      */
     void cancelIssue(Long issueId);
+
+    /**
+     * 根据 DTO 创建领料单
+     * @param dto 领料单 DTO
+     * @return 创建的领料单
+     */
+    PpMaterialIssue createFromDTO(MaterialIssueDTO dto);
 }

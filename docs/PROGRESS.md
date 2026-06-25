@@ -7,10 +7,10 @@
 
 ## 当前状态
 
-**阶段：** Phase 7 — 测试 + 部署
+**阶段：** Phase 6 — 前端完善 + 收尾
 **开始时间：** 2024-01-17
-**当前进度：** Phase 1-7 已完成 ✅
-**项目状态：** 所有 Phase 已完成，系统可部署
+**当前进度：** Phase 1-5 已完成，Phase 6 进行中
+**项目状态：** 核心功能已完善，系统可用
 
 ---
 
@@ -218,6 +218,34 @@
 - 创建部署文档（docs/DEPLOYMENT.md）
 - 创建用户手册（docs/USER_MANUAL.md）
 - 状态：Phase 7 已完成 ✅
+
+### 2026-06-25 — Phase 4-6 前端完善
+- **Phase 1: 简单单据表单**
+  - 创建 TransferFormDialog.vue（调拨单新增）
+  - 创建 StocktakeFormDialog.vue（盘点单新增）
+  - 创建 ReceiptFormDialog.vue（采购入库新增）
+  - 创建 ShipmentFormDialog.vue（销售出库新增）
+- **Phase 2: 订单表单**
+  - 创建 purchase/order/OrderFormDialog.vue（采购订单新增）
+  - 创建 sales/order/OrderFormDialog.vue（销售订单新增）
+- **Phase 3: 生产模块表单**
+  - 创建 BomFormDialog.vue（BOM新增）
+  - 创建 WorkOrderFormDialog.vue（生产工单新增）
+  - 创建 MaterialFormDialog.vue（领料单新增）
+  - 修复 production/material 路由注册
+- **Phase 4: 系统管理页面**
+  - 重写 system/role/index.vue + RoleFormDialog.vue（角色管理）
+  - 重写 system/menu/index.vue + MenuFormDialog.vue（菜单管理）
+  - 重写 system/dict/index.vue + DictTypeFormDialog.vue + DictDataFormDialog.vue（字典管理）
+- **Phase 5: 财务模块**
+  - 创建后端 FinReceivable/FinPayable 实体、Mapper、Service、Controller
+  - 创建前端 finance.ts API
+  - 重写 finance/receivable/index.vue + ReceivableFormDialog.vue（应收管理）
+  - 重写 finance/payable/index.vue + PayableFormDialog.vue（应付管理）
+- **Phase 6: 收尾**
+  - 修复所有 getStatusColor 返回类型问题
+  - 验证所有新文件无 TypeScript 错误
+  - 更新 PROGRESS.md
 
 ---
 

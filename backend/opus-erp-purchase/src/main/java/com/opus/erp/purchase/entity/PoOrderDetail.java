@@ -1,28 +1,22 @@
 package com.opus.erp.purchase.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.opus.erp.common.entity.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * 采购订单明细实体
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName("po_order_detail")
-public class PoOrderDetail implements Serializable {
+public class PoOrderDetail extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 主键ID
-     */
-    @TableId(type = IdType.AUTO)
-    private Long id;
 
     /**
      * 订单ID

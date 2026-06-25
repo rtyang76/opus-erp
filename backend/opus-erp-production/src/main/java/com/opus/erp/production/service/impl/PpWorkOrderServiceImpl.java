@@ -7,12 +7,14 @@ import com.opus.erp.common.exception.BusinessException;
 import com.opus.erp.common.result.ErrorCode;
 import com.opus.erp.common.utils.OrderNoGenerator;
 import com.opus.erp.inventory.service.InvTransactionService;
+import com.opus.erp.production.dto.WorkOrderDTO;
 import com.opus.erp.production.entity.PpWorkOrder;
 import com.opus.erp.production.enums.WorkOrderStatus;
 import com.opus.erp.production.mapper.PpWorkOrderMapper;
 import com.opus.erp.production.service.PpWorkOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -20,8 +22,6 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 生产工单服务实现类
@@ -171,5 +171,12 @@ public class PpWorkOrderServiceImpl extends ServiceImpl<PpWorkOrderMapper, PpWor
      */
     private String generateOrderNo() {
         return OrderNoGenerator.generateWorkOrderNo();
+    }
+
+    @Override
+    public PpWorkOrder createFromDTO(WorkOrderDTO dto) {
+        PpWorkOrder workOrder = new PpWorkOrder();
+        BeanUtils.copyProperties(dto, workOrder);
+        return createWorkOrder(workOrder);
     }
 }
