@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.opus.erp.common.exception.BusinessException;
 import com.opus.erp.common.result.ErrorCode;
+import com.opus.erp.system.dto.MenuDTO;
 import com.opus.erp.system.entity.SysMenu;
 import com.opus.erp.system.mapper.SysMenuMapper;
 import com.opus.erp.system.service.MenuService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -55,14 +57,20 @@ public class MenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impleme
     }
 
     @Override
-    public SysMenu createMenu(SysMenu menu) {
+    public SysMenu createMenu(MenuDTO dto) {
+        SysMenu menu = new SysMenu();
+        BeanUtils.copyProperties(dto, menu);
         baseMapper.insert(menu);
         log.info("创建菜单成功: menuName={}", menu.getMenuName());
         return menu;
     }
 
     @Override
-    public SysMenu updateMenu(SysMenu menu) {
+    public SysMenu updateMenu(Long id, MenuDTO dto) {
+        SysMenu menu = new SysMenu();
+        BeanUtils.copyProperties(dto, menu);
+        menu.setId(id);
+
         SysMenu existingMenu = baseMapper.selectById(menu.getId());
         if (existingMenu == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND, "菜单不存在");

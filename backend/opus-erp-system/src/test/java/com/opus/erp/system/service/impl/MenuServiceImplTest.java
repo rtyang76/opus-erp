@@ -2,6 +2,7 @@ package com.opus.erp.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.opus.erp.common.exception.BusinessException;
+import com.opus.erp.system.dto.MenuDTO;
 import com.opus.erp.system.entity.SysMenu;
 import com.opus.erp.system.mapper.SysMenuMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -163,16 +164,16 @@ class MenuServiceImplTest {
         @DisplayName("创建菜单成功")
         void createMenu_success() {
             // given
-            SysMenu newMenu = new SysMenu();
-            newMenu.setParentId(1L);
-            newMenu.setMenuName("角色管理");
-            newMenu.setMenuType("C");
-            newMenu.setSortOrder(2);
+            MenuDTO newDto = new MenuDTO();
+            newDto.setParentId(1L);
+            newDto.setMenuName("角色管理");
+            newDto.setMenuType("C");
+            newDto.setSortOrder(2);
 
             when(menuMapper.insert(any(SysMenu.class))).thenReturn(1);
 
             // when
-            SysMenu result = menuService.createMenu(newMenu);
+            SysMenu result = menuService.createMenu(newDto);
 
             // then
             assertThat(result).isNotNull();
@@ -189,15 +190,14 @@ class MenuServiceImplTest {
         @DisplayName("更新菜单成功")
         void updateMenu_success() {
             // given
-            SysMenu updateMenu = new SysMenu();
-            updateMenu.setId(1L);
-            updateMenu.setMenuName("系统管理-更新");
+            MenuDTO updateDto = new MenuDTO();
+            updateDto.setMenuName("系统管理-更新");
 
             when(menuMapper.selectById(1L)).thenReturn(testMenu);
             when(menuMapper.updateById(any(SysMenu.class))).thenReturn(1);
 
             // when
-            SysMenu result = menuService.updateMenu(updateMenu);
+            SysMenu result = menuService.updateMenu(1L, updateDto);
 
             // then
             assertThat(result).isNotNull();
@@ -208,13 +208,13 @@ class MenuServiceImplTest {
         @DisplayName("更新菜单失败 - 菜单不存在")
         void updateMenu_notFound_throwsException() {
             // given
-            SysMenu updateMenu = new SysMenu();
-            updateMenu.setId(999L);
+            MenuDTO updateDto = new MenuDTO();
+            updateDto.setMenuName("test");
 
             when(menuMapper.selectById(999L)).thenReturn(null);
 
             // when & then
-            assertThatThrownBy(() -> menuService.updateMenu(updateMenu))
+            assertThatThrownBy(() -> menuService.updateMenu(999L, updateDto))
                     .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("菜单不存在");
         }

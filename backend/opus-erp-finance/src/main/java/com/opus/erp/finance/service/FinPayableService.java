@@ -1,12 +1,13 @@
 package com.opus.erp.finance.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.opus.erp.finance.entity.FinPayable;
 
 /**
  * 应付单 Service 接口
  */
-public interface FinPayableService {
+public interface FinPayableService extends IService<FinPayable> {
 
     /**
      * 分页查询应付单
@@ -14,22 +15,17 @@ public interface FinPayableService {
     Page<FinPayable> getPage(int pageNum, int pageSize, Long supplierId, String status);
 
     /**
-     * 根据ID查询
-     */
-    FinPayable getById(Long id);
-
-    /**
      * 创建应付单
      */
-    FinPayable create(FinPayable payable);
+    FinPayable createPayable(FinPayable payable);
 
     /**
      * 更新应付单
      */
-    FinPayable update(Long id, FinPayable payable);
+    FinPayable updatePayable(Long id, FinPayable payable);
 
     /**
-     * 删除应付单
+     * 删除应付单（逻辑删除）
      */
-    void delete(Long id);
+    void deletePayable(Long id);
 }

@@ -43,7 +43,7 @@ public class ReceivableController {
      */
     @PostMapping
     public R<FinReceivable> create(@Valid @RequestBody FinReceivable receivable) {
-        return R.ok(receivableService.create(receivable));
+        return R.ok(receivableService.createReceivable(receivable));
     }
 
     /**
@@ -51,7 +51,7 @@ public class ReceivableController {
      */
     @PutMapping("/{id}")
     public R<FinReceivable> update(@PathVariable Long id, @Valid @RequestBody FinReceivable receivable) {
-        return R.ok(receivableService.update(id, receivable));
+        return R.ok(receivableService.updateReceivable(id, receivable));
     }
 
     /**
@@ -59,7 +59,7 @@ public class ReceivableController {
      */
     @DeleteMapping("/{id}")
     public R<Void> delete(@PathVariable Long id) {
-        receivableService.delete(id);
+        receivableService.deleteReceivable(id);
         return R.ok();
     }
 }

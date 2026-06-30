@@ -7,7 +7,6 @@ import com.opus.erp.system.entity.SysRole;
 import com.opus.erp.system.service.RoleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,9 +65,7 @@ public class RoleController {
      */
     @PostMapping
     public R<SysRole> createRole(@Valid @RequestBody RoleDTO dto) {
-        SysRole role = new SysRole();
-        BeanUtils.copyProperties(dto, role);
-        SysRole createdRole = roleService.createRole(role);
+        SysRole createdRole = roleService.createRole(dto);
         return R.ok("创建成功", createdRole);
     }
 
@@ -77,10 +74,7 @@ public class RoleController {
      */
     @PutMapping("/{id}")
     public R<SysRole> updateRole(@PathVariable Long id, @Valid @RequestBody RoleDTO dto) {
-        SysRole role = new SysRole();
-        BeanUtils.copyProperties(dto, role);
-        role.setId(id);
-        SysRole updatedRole = roleService.updateRole(role);
+        SysRole updatedRole = roleService.updateRole(id, dto);
         return R.ok("更新成功", updatedRole);
     }
 

@@ -7,7 +7,6 @@ import com.opus.erp.system.entity.SysUser;
 import com.opus.erp.system.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,26 +53,19 @@ public class UserController {
 
     /**
      * 创建用户
-     * TODO: DTO-to-Entity 转换应移入 Service 层
      */
     @PostMapping
     public R<SysUser> createUser(@Valid @RequestBody UserDTO dto) {
-        SysUser user = new SysUser();
-        BeanUtils.copyProperties(dto, user);
-        SysUser createdUser = userService.createUser(user);
+        SysUser createdUser = userService.createUser(dto);
         return R.ok("创建成功", createdUser);
     }
 
     /**
      * 更新用户
-     * TODO: DTO-to-Entity 转换应移入 Service 层
      */
     @PutMapping("/{id}")
     public R<SysUser> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
-        SysUser user = new SysUser();
-        BeanUtils.copyProperties(dto, user);
-        user.setId(id);
-        SysUser updatedUser = userService.updateUser(user);
+        SysUser updatedUser = userService.updateUser(id, dto);
         return R.ok("更新成功", updatedUser);
     }
 

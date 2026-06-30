@@ -2,6 +2,7 @@ package com.opus.erp.system.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.opus.erp.system.dto.UserDTO;
 import com.opus.erp.system.entity.SysUser;
 
 /**
@@ -21,17 +22,18 @@ public interface UserService extends IService<SysUser> {
 
     /**
      * 创建用户
-     * @param user 用户信息
+     * @param dto 用户DTO
      * @return 创建的用户
      */
-    SysUser createUser(SysUser user);
+    SysUser createUser(UserDTO dto);
 
     /**
      * 更新用户
-     * @param user 用户信息
+     * @param id 用户ID
+     * @param dto 用户DTO
      * @return 更新的用户
      */
-    SysUser updateUser(SysUser user);
+    SysUser updateUser(Long id, UserDTO dto);
 
     /**
      * 删除用户（逻辑删除）

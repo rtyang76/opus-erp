@@ -1,6 +1,7 @@
 package com.opus.erp.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.opus.erp.system.dto.MenuDTO;
 import com.opus.erp.system.entity.SysMenu;
 
 import java.util.List;
@@ -38,17 +39,18 @@ public interface MenuService extends IService<SysMenu> {
 
     /**
      * 创建菜单
-     * @param menu 菜单信息
+     * @param dto 菜单DTO
      * @return 创建的菜单
      */
-    SysMenu createMenu(SysMenu menu);
+    SysMenu createMenu(MenuDTO dto);
 
     /**
      * 更新菜单
-     * @param menu 菜单信息
+     * @param id 菜单ID
+     * @param dto 菜单DTO
      * @return 更新的菜单
      */
-    SysMenu updateMenu(SysMenu menu);
+    SysMenu updateMenu(Long id, MenuDTO dto);
 
     /**
      * 删除菜单（逻辑删除）

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.opus.erp.common.exception.BusinessException;
 import com.opus.erp.common.result.ErrorCode;
+import com.opus.erp.system.dto.DictDataDTO;
+import com.opus.erp.system.dto.DictTypeDTO;
 import com.opus.erp.system.entity.SysDictData;
 import com.opus.erp.system.entity.SysDictType;
 import com.opus.erp.system.mapper.SysDictDataMapper;
@@ -11,6 +13,7 @@ import com.opus.erp.system.mapper.SysDictTypeMapper;
 import com.opus.erp.system.service.DictService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,7 +48,10 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public SysDictType createDictType(SysDictType dictType) {
+    public SysDictType createDictType(DictTypeDTO dto) {
+        SysDictType dictType = new SysDictType();
+        BeanUtils.copyProperties(dto, dictType);
+
         // 检查字典类型编码是否已存在
         LambdaQueryWrapper<SysDictType> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysDictType::getDictType, dictType.getDictType());
@@ -59,7 +65,11 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public SysDictType updateDictType(SysDictType dictType) {
+    public SysDictType updateDictType(Long id, DictTypeDTO dto) {
+        SysDictType dictType = new SysDictType();
+        BeanUtils.copyProperties(dto, dictType);
+        dictType.setId(id);
+
         SysDictType existingDictType = dictTypeMapper.selectById(dictType.getId());
         if (existingDictType == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND, "字典类型不存在");
@@ -102,14 +112,20 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public SysDictData createDictData(SysDictData dictData) {
+    public SysDictData createDictData(DictDataDTO dto) {
+        SysDictData dictData = new SysDictData();
+        BeanUtils.copyProperties(dto, dictData);
         dictDataMapper.insert(dictData);
         log.info("创建字典数据成功: dictType={}, dictValue={}", dictData.getDictType(), dictData.getDictValue());
         return dictData;
     }
 
     @Override
-    public SysDictData updateDictData(SysDictData dictData) {
+    public SysDictData updateDictData(Long id, DictDataDTO dto) {
+        SysDictData dictData = new SysDictData();
+        BeanUtils.copyProperties(dto, dictData);
+        dictData.setId(id);
+
         SysDictData existingDictData = dictDataMapper.selectById(dictData.getId());
         if (existingDictData == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND, "字典数据不存在");

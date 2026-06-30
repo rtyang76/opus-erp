@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.opus.erp.common.exception.BusinessException;
 import com.opus.erp.common.result.ErrorCode;
+import com.opus.erp.system.dto.UserDTO;
 import com.opus.erp.system.entity.SysUser;
 import com.opus.erp.system.entity.SysUserRole;
 import com.opus.erp.system.mapper.SysUserMapper;
@@ -12,6 +13,7 @@ import com.opus.erp.system.mapper.SysUserRoleMapper;
 import com.opus.erp.system.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +51,10 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SysUser createUser(SysUser user) {
+    public SysUser createUser(UserDTO dto) {
+        SysUser user = new SysUser();
+        BeanUtils.copyProperties(dto, user);
+
         // 检查用户名是否已存在
         SysUser existingUser = userMapper.selectByUsername(user.getUsername());
         if (existingUser != null) {
@@ -78,7 +83,11 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SysUser updateUser(SysUser user) {
+    public SysUser updateUser(Long id, UserDTO dto) {
+        SysUser user = new SysUser();
+        BeanUtils.copyProperties(dto, user);
+        user.setId(id);
+
         // 检查用户是否存在
         SysUser existingUser = userMapper.selectById(user.getId());
         if (existingUser == null) {

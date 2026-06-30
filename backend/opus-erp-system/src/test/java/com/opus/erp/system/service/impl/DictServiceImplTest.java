@@ -2,6 +2,8 @@ package com.opus.erp.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.opus.erp.common.exception.BusinessException;
+import com.opus.erp.system.dto.DictDataDTO;
+import com.opus.erp.system.dto.DictTypeDTO;
 import com.opus.erp.system.entity.SysDictData;
 import com.opus.erp.system.entity.SysDictType;
 import com.opus.erp.system.mapper.SysDictDataMapper;
@@ -111,15 +113,15 @@ class DictServiceImplTest {
         @DisplayName("创建字典类型成功")
         void createDictType_success() {
             // given
-            SysDictType newDictType = new SysDictType();
-            newDictType.setDictType("sys_user_type");
-            newDictType.setDictName("用户类型");
+            DictTypeDTO newDto = new DictTypeDTO();
+            newDto.setDictType("sys_user_type");
+            newDto.setDictName("用户类型");
 
             when(dictTypeMapper.selectCount(any(LambdaQueryWrapper.class))).thenReturn(0L);
             when(dictTypeMapper.insert(any(SysDictType.class))).thenReturn(1);
 
             // when
-            SysDictType result = dictService.createDictType(newDictType);
+            SysDictType result = dictService.createDictType(newDto);
 
             // then
             assertThat(result).isNotNull();
@@ -130,13 +132,13 @@ class DictServiceImplTest {
         @DisplayName("创建字典类型失败 - 编码已存在")
         void createDictType_duplicateCode_throwsException() {
             // given
-            SysDictType newDictType = new SysDictType();
-            newDictType.setDictType("sys_user_status");
+            DictTypeDTO newDto = new DictTypeDTO();
+            newDto.setDictType("sys_user_status");
 
             when(dictTypeMapper.selectCount(any(LambdaQueryWrapper.class))).thenReturn(1L);
 
             // when & then
-            assertThatThrownBy(() -> dictService.createDictType(newDictType))
+            assertThatThrownBy(() -> dictService.createDictType(newDto))
                     .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("字典类型编码已存在");
         }
@@ -145,15 +147,14 @@ class DictServiceImplTest {
         @DisplayName("更新字典类型成功")
         void updateDictType_success() {
             // given
-            SysDictType updateDictType = new SysDictType();
-            updateDictType.setId(1L);
-            updateDictType.setDictName("用户状态-更新");
+            DictTypeDTO updateDto = new DictTypeDTO();
+            updateDto.setDictName("用户状态-更新");
 
             when(dictTypeMapper.selectById(1L)).thenReturn(testDictType);
             when(dictTypeMapper.updateById(any(SysDictType.class))).thenReturn(1);
 
             // when
-            SysDictType result = dictService.updateDictType(updateDictType);
+            SysDictType result = dictService.updateDictType(1L, updateDto);
 
             // then
             assertThat(result).isNotNull();
@@ -164,13 +165,13 @@ class DictServiceImplTest {
         @DisplayName("更新字典类型失败 - 不存在")
         void updateDictType_notFound_throwsException() {
             // given
-            SysDictType updateDictType = new SysDictType();
-            updateDictType.setId(999L);
+            DictTypeDTO updateDto = new DictTypeDTO();
+            updateDto.setDictName("test");
 
             when(dictTypeMapper.selectById(999L)).thenReturn(null);
 
             // when & then
-            assertThatThrownBy(() -> dictService.updateDictType(updateDictType))
+            assertThatThrownBy(() -> dictService.updateDictType(999L, updateDto))
                     .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("字典类型不存在");
         }
@@ -252,15 +253,15 @@ class DictServiceImplTest {
         @DisplayName("创建字典数据成功")
         void createDictData_success() {
             // given
-            SysDictData newDictData = new SysDictData();
-            newDictData.setDictType("sys_user_status");
-            newDictData.setDictLabel("禁用");
-            newDictData.setDictValue("0");
+            DictDataDTO newDto = new DictDataDTO();
+            newDto.setDictType("sys_user_status");
+            newDto.setDictLabel("禁用");
+            newDto.setDictValue("0");
 
             when(dictDataMapper.insert(any(SysDictData.class))).thenReturn(1);
 
             // when
-            SysDictData result = dictService.createDictData(newDictData);
+            SysDictData result = dictService.createDictData(newDto);
 
             // then
             assertThat(result).isNotNull();
@@ -271,15 +272,14 @@ class DictServiceImplTest {
         @DisplayName("更新字典数据成功")
         void updateDictData_success() {
             // given
-            SysDictData updateDictData = new SysDictData();
-            updateDictData.setId(1L);
-            updateDictData.setDictLabel("启用-更新");
+            DictDataDTO updateDto = new DictDataDTO();
+            updateDto.setDictLabel("启用-更新");
 
             when(dictDataMapper.selectById(1L)).thenReturn(testDictData);
             when(dictDataMapper.updateById(any(SysDictData.class))).thenReturn(1);
 
             // when
-            SysDictData result = dictService.updateDictData(updateDictData);
+            SysDictData result = dictService.updateDictData(1L, updateDto);
 
             // then
             assertThat(result).isNotNull();
@@ -290,13 +290,13 @@ class DictServiceImplTest {
         @DisplayName("更新字典数据失败 - 不存在")
         void updateDictData_notFound_throwsException() {
             // given
-            SysDictData updateDictData = new SysDictData();
-            updateDictData.setId(999L);
+            DictDataDTO updateDto = new DictDataDTO();
+            updateDto.setDictLabel("test");
 
             when(dictDataMapper.selectById(999L)).thenReturn(null);
 
             // when & then
-            assertThatThrownBy(() -> dictService.updateDictData(updateDictData))
+            assertThatThrownBy(() -> dictService.updateDictData(999L, updateDto))
                     .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("字典数据不存在");
         }

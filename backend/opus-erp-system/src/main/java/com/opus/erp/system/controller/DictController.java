@@ -8,7 +8,6 @@ import com.opus.erp.system.entity.SysDictType;
 import com.opus.erp.system.service.DictService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,9 +54,7 @@ public class DictController {
      */
     @PostMapping("/types")
     public R<SysDictType> createDictType(@Valid @RequestBody DictTypeDTO dto) {
-        SysDictType dictType = new SysDictType();
-        BeanUtils.copyProperties(dto, dictType);
-        SysDictType createdDictType = dictService.createDictType(dictType);
+        SysDictType createdDictType = dictService.createDictType(dto);
         return R.ok("创建成功", createdDictType);
     }
 
@@ -66,10 +63,7 @@ public class DictController {
      */
     @PutMapping("/types/{id}")
     public R<SysDictType> updateDictType(@PathVariable Long id, @Valid @RequestBody DictTypeDTO dto) {
-        SysDictType dictType = new SysDictType();
-        BeanUtils.copyProperties(dto, dictType);
-        dictType.setId(id);
-        SysDictType updatedDictType = dictService.updateDictType(dictType);
+        SysDictType updatedDictType = dictService.updateDictType(id, dto);
         return R.ok("更新成功", updatedDictType);
     }
 
@@ -107,9 +101,7 @@ public class DictController {
      */
     @PostMapping("/data")
     public R<SysDictData> createDictData(@Valid @RequestBody DictDataDTO dto) {
-        SysDictData dictData = new SysDictData();
-        BeanUtils.copyProperties(dto, dictData);
-        SysDictData createdDictData = dictService.createDictData(dictData);
+        SysDictData createdDictData = dictService.createDictData(dto);
         return R.ok("创建成功", createdDictData);
     }
 
@@ -118,10 +110,7 @@ public class DictController {
      */
     @PutMapping("/data/{id}")
     public R<SysDictData> updateDictData(@PathVariable Long id, @Valid @RequestBody DictDataDTO dto) {
-        SysDictData dictData = new SysDictData();
-        BeanUtils.copyProperties(dto, dictData);
-        dictData.setId(id);
-        SysDictData updatedDictData = dictService.updateDictData(dictData);
+        SysDictData updatedDictData = dictService.updateDictData(id, dto);
         return R.ok("更新成功", updatedDictData);
     }
 

@@ -3,6 +3,7 @@ package com.opus.erp.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.opus.erp.common.exception.BusinessException;
+import com.opus.erp.system.dto.UserDTO;
 import com.opus.erp.system.entity.SysUser;
 import com.opus.erp.system.entity.SysUserRole;
 import com.opus.erp.system.mapper.SysUserMapper;
@@ -108,11 +109,11 @@ class UserServiceImplTest {
         @DisplayName("创建用户成功")
         void createUser_success() {
             // given
-            SysUser newUser = new SysUser();
-            newUser.setUsername("newuser");
-            newUser.setPassword("123456");
-            newUser.setNickname("新用户");
-            newUser.setRoleIds(Arrays.asList(1L, 2L));
+            UserDTO newDto = new UserDTO();
+            newDto.setUsername("newuser");
+            newDto.setPassword("123456");
+            newDto.setNickname("新用户");
+            newDto.setRoleIds(Arrays.asList(1L, 2L));
 
             when(userMapper.selectByUsername("newuser")).thenReturn(null);
             when(passwordEncoder.encode("123456")).thenReturn("$2a$10$encoded_password");
@@ -120,7 +121,7 @@ class UserServiceImplTest {
             when(userRoleMapper.insert(any(SysUserRole.class))).thenReturn(1);
 
             // when
-            SysUser result = userService.createUser(newUser);
+            SysUser result = userService.createUser(newDto);
 
             // then
             assertThat(result).isNotNull();
@@ -133,14 +134,14 @@ class UserServiceImplTest {
         @DisplayName("创建用户失败 - 用户名已存在")
         void createUser_duplicateUsername_throwsException() {
             // given
-            SysUser newUser = new SysUser();
-            newUser.setUsername("admin");
-            newUser.setPassword("123456");
+            UserDTO newDto = new UserDTO();
+            newDto.setUsername("admin");
+            newDto.setPassword("123456");
 
             when(userMapper.selectByUsername("admin")).thenReturn(testUser);
 
             // when & then
-            assertThatThrownBy(() -> userService.createUser(newUser))
+            assertThatThrownBy(() -> userService.createUser(newDto))
                     .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("用户名已存在");
         }
@@ -154,10 +155,9 @@ class UserServiceImplTest {
         @DisplayName("更新用户成功")
         void updateUser_success() {
             // given
-            SysUser updateUser = new SysUser();
-            updateUser.setId(1L);
-            updateUser.setNickname("新昵称");
-            updateUser.setRoleIds(Arrays.asList(1L, 3L));
+            UserDTO updateDto = new UserDTO();
+            updateDto.setNickname("新昵称");
+            updateDto.setRoleIds(Arrays.asList(1L, 3L));
 
             when(userMapper.selectById(1L)).thenReturn(testUser);
             when(userMapper.updateById(any(SysUser.class))).thenReturn(1);
@@ -165,7 +165,7 @@ class UserServiceImplTest {
             when(userRoleMapper.insert(any(SysUserRole.class))).thenReturn(1);
 
             // when
-            SysUser result = userService.updateUser(updateUser);
+            SysUser result = userService.updateUser(1L, updateDto);
 
             // then
             assertThat(result).isNotNull();
@@ -177,13 +177,13 @@ class UserServiceImplTest {
         @DisplayName("更新用户失败 - 用户不存在")
         void updateUser_notFound_throwsException() {
             // given
-            SysUser updateUser = new SysUser();
-            updateUser.setId(999L);
+            UserDTO updateDto = new UserDTO();
+            updateDto.setNickname("test");
 
             when(userMapper.selectById(999L)).thenReturn(null);
 
             // when & then
-            assertThatThrownBy(() -> userService.updateUser(updateUser))
+            assertThatThrownBy(() -> userService.updateUser(999L, updateDto))
                     .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("用户不存在");
         }

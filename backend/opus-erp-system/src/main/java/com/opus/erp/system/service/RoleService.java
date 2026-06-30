@@ -2,6 +2,7 @@ package com.opus.erp.system.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.opus.erp.system.dto.RoleDTO;
 import com.opus.erp.system.entity.SysRole;
 
 import java.util.List;
@@ -36,17 +37,18 @@ public interface RoleService extends IService<SysRole> {
 
     /**
      * 创建角色
-     * @param role 角色信息
+     * @param dto 角色DTO
      * @return 创建的角色
      */
-    SysRole createRole(SysRole role);
+    SysRole createRole(RoleDTO dto);
 
     /**
      * 更新角色
-     * @param role 角色信息
+     * @param id 角色ID
+     * @param dto 角色DTO
      * @return 更新的角色
      */
-    SysRole updateRole(SysRole role);
+    SysRole updateRole(Long id, RoleDTO dto);
 
     /**
      * 删除角色（逻辑删除）

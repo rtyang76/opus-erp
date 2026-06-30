@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.opus.erp.common.exception.BusinessException;
 import com.opus.erp.common.result.ErrorCode;
+import com.opus.erp.system.dto.RoleDTO;
 import com.opus.erp.system.entity.SysRole;
 import com.opus.erp.system.entity.SysRoleMenu;
 import com.opus.erp.system.mapper.SysRoleMapper;
@@ -12,6 +13,7 @@ import com.opus.erp.system.mapper.SysRoleMenuMapper;
 import com.opus.erp.system.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -69,7 +71,10 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SysRole createRole(SysRole role) {
+    public SysRole createRole(RoleDTO dto) {
+        SysRole role = new SysRole();
+        BeanUtils.copyProperties(dto, role);
+
         // 检查角色编码是否已存在
         LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysRole::getRoleCode, role.getRoleCode());
@@ -97,7 +102,11 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SysRole updateRole(SysRole role) {
+    public SysRole updateRole(Long id, RoleDTO dto) {
+        SysRole role = new SysRole();
+        BeanUtils.copyProperties(dto, role);
+        role.setId(id);
+
         // 检查角色是否存在
         SysRole existingRole = baseMapper.selectById(role.getId());
         if (existingRole == null) {

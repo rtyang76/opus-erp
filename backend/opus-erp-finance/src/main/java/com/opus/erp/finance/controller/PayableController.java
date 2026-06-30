@@ -43,7 +43,7 @@ public class PayableController {
      */
     @PostMapping
     public R<FinPayable> create(@Valid @RequestBody FinPayable payable) {
-        return R.ok(payableService.create(payable));
+        return R.ok(payableService.createPayable(payable));
     }
 
     /**
@@ -51,7 +51,7 @@ public class PayableController {
      */
     @PutMapping("/{id}")
     public R<FinPayable> update(@PathVariable Long id, @Valid @RequestBody FinPayable payable) {
-        return R.ok(payableService.update(id, payable));
+        return R.ok(payableService.updatePayable(id, payable));
     }
 
     /**
@@ -59,7 +59,7 @@ public class PayableController {
      */
     @DeleteMapping("/{id}")
     public R<Void> delete(@PathVariable Long id) {
-        payableService.delete(id);
+        payableService.deletePayable(id);
         return R.ok();
     }
 }

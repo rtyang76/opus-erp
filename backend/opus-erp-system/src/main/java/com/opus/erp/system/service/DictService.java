@@ -1,6 +1,7 @@
 package com.opus.erp.system.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.opus.erp.system.dto.DictDataDTO;
+import com.opus.erp.system.dto.DictTypeDTO;
 import com.opus.erp.system.entity.SysDictData;
 import com.opus.erp.system.entity.SysDictType;
 
@@ -28,17 +29,18 @@ public interface DictService {
 
     /**
      * 创建字典类型
-     * @param dictType 字典类型信息
+     * @param dto 字典类型DTO
      * @return 创建的字典类型
      */
-    SysDictType createDictType(SysDictType dictType);
+    SysDictType createDictType(DictTypeDTO dto);
 
     /**
      * 更新字典类型
-     * @param dictType 字典类型信息
+     * @param id 字典类型ID
+     * @param dto 字典类型DTO
      * @return 更新的字典类型
      */
-    SysDictType updateDictType(SysDictType dictType);
+    SysDictType updateDictType(Long id, DictTypeDTO dto);
 
     /**
      * 删除字典类型（逻辑删除）
@@ -64,17 +66,18 @@ public interface DictService {
 
     /**
      * 创建字典数据
-     * @param dictData 字典数据信息
+     * @param dto 字典数据DTO
      * @return 创建的字典数据
      */
-    SysDictData createDictData(SysDictData dictData);
+    SysDictData createDictData(DictDataDTO dto);
 
     /**
      * 更新字典数据
-     * @param dictData 字典数据信息
+     * @param id 字典数据ID
+     * @param dto 字典数据DTO
      * @return 更新的字典数据
      */
-    SysDictData updateDictData(SysDictData dictData);
+    SysDictData updateDictData(Long id, DictDataDTO dto);
 
     /**
      * 删除字典数据（逻辑删除）

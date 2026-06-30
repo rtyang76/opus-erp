@@ -7,7 +7,6 @@ import com.opus.erp.system.entity.SysMenu;
 import com.opus.erp.system.service.MenuService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,9 +70,7 @@ public class MenuController {
      */
     @PostMapping
     public R<SysMenu> createMenu(@Valid @RequestBody MenuDTO dto) {
-        SysMenu menu = new SysMenu();
-        BeanUtils.copyProperties(dto, menu);
-        SysMenu createdMenu = menuService.createMenu(menu);
+        SysMenu createdMenu = menuService.createMenu(dto);
         return R.ok("创建成功", createdMenu);
     }
 
@@ -82,10 +79,7 @@ public class MenuController {
      */
     @PutMapping("/{id}")
     public R<SysMenu> updateMenu(@PathVariable Long id, @Valid @RequestBody MenuDTO dto) {
-        SysMenu menu = new SysMenu();
-        BeanUtils.copyProperties(dto, menu);
-        menu.setId(id);
-        SysMenu updatedMenu = menuService.updateMenu(menu);
+        SysMenu updatedMenu = menuService.updateMenu(id, dto);
         return R.ok("更新成功", updatedMenu);
     }
 

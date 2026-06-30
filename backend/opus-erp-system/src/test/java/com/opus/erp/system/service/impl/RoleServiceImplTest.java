@@ -3,6 +3,7 @@ package com.opus.erp.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.opus.erp.common.exception.BusinessException;
+import com.opus.erp.system.dto.RoleDTO;
 import com.opus.erp.system.entity.SysRole;
 import com.opus.erp.system.mapper.SysRoleMapper;
 import com.opus.erp.system.mapper.SysRoleMenuMapper;
@@ -161,15 +162,15 @@ class RoleServiceImplTest {
         @DisplayName("创建角色成功")
         void createRole_success() {
             // given
-            SysRole newRole = new SysRole();
-            newRole.setRoleCode("USER");
-            newRole.setRoleName("普通用户");
+            RoleDTO newDto = new RoleDTO();
+            newDto.setRoleCode("USER");
+            newDto.setRoleName("普通用户");
 
             when(roleMapper.selectCount(any(LambdaQueryWrapper.class))).thenReturn(0L);
             when(roleMapper.insert(any(SysRole.class))).thenReturn(1);
 
             // when
-            SysRole result = roleService.createRole(newRole);
+            SysRole result = roleService.createRole(newDto);
 
             // then
             assertThat(result).isNotNull();
@@ -181,14 +182,14 @@ class RoleServiceImplTest {
         @DisplayName("创建角色失败 - 角色编码已存在")
         void createRole_duplicateCode_throwsException() {
             // given
-            SysRole newRole = new SysRole();
-            newRole.setRoleCode("ADMIN");
-            newRole.setRoleName("管理员2");
+            RoleDTO newDto = new RoleDTO();
+            newDto.setRoleCode("ADMIN");
+            newDto.setRoleName("管理员2");
 
             when(roleMapper.selectCount(any(LambdaQueryWrapper.class))).thenReturn(1L);
 
             // when & then
-            assertThatThrownBy(() -> roleService.createRole(newRole))
+            assertThatThrownBy(() -> roleService.createRole(newDto))
                     .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("角色编码已存在");
         }
@@ -202,17 +203,16 @@ class RoleServiceImplTest {
         @DisplayName("更新角色成功")
         void updateRole_success() {
             // given
-            SysRole updateRole = new SysRole();
-            updateRole.setId(1L);
-            updateRole.setRoleCode("ADMIN");
-            updateRole.setRoleName("超级管理员");
+            RoleDTO updateDto = new RoleDTO();
+            updateDto.setRoleCode("ADMIN");
+            updateDto.setRoleName("超级管理员");
 
             when(roleMapper.selectById(1L)).thenReturn(testRole);
             when(roleMapper.selectCount(any(LambdaQueryWrapper.class))).thenReturn(0L);
             when(roleMapper.updateById(any(SysRole.class))).thenReturn(1);
 
             // when
-            SysRole result = roleService.updateRole(updateRole);
+            SysRole result = roleService.updateRole(1L, updateDto);
 
             // then
             assertThat(result).isNotNull();
@@ -223,14 +223,13 @@ class RoleServiceImplTest {
         @DisplayName("更新角色失败 - 角色不存在")
         void updateRole_notFound_throwsException() {
             // given
-            SysRole updateRole = new SysRole();
-            updateRole.setId(999L);
-            updateRole.setRoleCode("ADMIN");
+            RoleDTO updateDto = new RoleDTO();
+            updateDto.setRoleCode("ADMIN");
 
             when(roleMapper.selectById(999L)).thenReturn(null);
 
             // when & then
-            assertThatThrownBy(() -> roleService.updateRole(updateRole))
+            assertThatThrownBy(() -> roleService.updateRole(999L, updateDto))
                     .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("角色不存在");
         }
@@ -239,15 +238,14 @@ class RoleServiceImplTest {
         @DisplayName("更新角色失败 - 角色编码重复")
         void updateRole_duplicateCode_throwsException() {
             // given
-            SysRole updateRole = new SysRole();
-            updateRole.setId(1L);
-            updateRole.setRoleCode("USER");
+            RoleDTO updateDto = new RoleDTO();
+            updateDto.setRoleCode("USER");
 
             when(roleMapper.selectById(1L)).thenReturn(testRole);
             when(roleMapper.selectCount(any(LambdaQueryWrapper.class))).thenReturn(1L);
 
             // when & then
-            assertThatThrownBy(() -> roleService.updateRole(updateRole))
+            assertThatThrownBy(() -> roleService.updateRole(1L, updateDto))
                     .isInstanceOf(BusinessException.class)
                     .hasMessageContaining("角色编码已存在");
         }
